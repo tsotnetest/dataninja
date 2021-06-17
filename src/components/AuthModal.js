@@ -22,15 +22,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const emptyData = {username: '', password: ''};
+
 const AuthModal = () => {
   const [{authToken}, dispatch] = useStore();
   const classes = useStyles();
 
-  const [formData, setFormData] = useState({username: '', password: ''});
+  const [formData, setFormData] = useState(emptyData);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     dispatch(login(formData))
+    setFormData(emptyData)
   };
 
   return (
