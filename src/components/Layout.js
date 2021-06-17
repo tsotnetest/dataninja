@@ -1,12 +1,8 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
-import {
-  Link,
-} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import {Button, Divider} from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
 import ListIcon from '@material-ui/icons/List';
-import {useLocation} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,17 +32,9 @@ const Layout = ({children}) => {
 
   const routes = [
     {
-      to: '/add-employee',
-      icon: <AddIcon/>,
-      label: 'Add employee'
-    }, {
       to: '/employees',
       icon: <ListIcon/>,
       label: 'Employees list'
-    }, {
-      to: '/add-department',
-      icon: <AddIcon/>,
-      label: 'Add department'
     }, {
       to: '/departments',
       icon: <ListIcon/>,

@@ -1,11 +1,7 @@
 import {useStore} from './store/Store';
-import DepartmentForm from './components/DepartmentForm';
-import EmployeeForm from './components/EmployeeForm';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from 'react-router-dom';
+import DepartmentFormModal from './components/DepartmentFormModal';
+import EmployeeFormModal from './components/EmployeeFormModal';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Home from './components/Home';
 import {useEffect} from 'react';
 import Layout from './components/Layout';
@@ -13,8 +9,7 @@ import EmployeesList from './components/EmployeesList';
 import DepartmentsList from './components/DepartmentsList';
 
 function App() {
-  const [store, dispatch] = useStore();
-  console.log(store);
+  const [store] = useStore();
 
   useEffect(() => {
     localStorage.setItem('AppData', JSON.stringify(store));
@@ -29,7 +24,7 @@ function App() {
       </Route>
       <Route path="/add-employee">
         <Layout>
-          <EmployeeForm/>
+          <EmployeeFormModal/>
         </Layout>
       </Route>
       <Route path="/employees">
@@ -39,7 +34,7 @@ function App() {
       </Route>
       <Route path="/add-department">
         <Layout>
-          <DepartmentForm/>
+          <DepartmentFormModal/>
         </Layout>
       </Route>
       <Route path="/departments">

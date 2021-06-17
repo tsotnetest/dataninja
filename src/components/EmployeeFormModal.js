@@ -1,12 +1,14 @@
 import React, {useState} from 'react';
 
 import {useStore} from '../store/Store';
-import {addEmployee} from '../store/AppReducer';
+import {addEmployee, updateEmployee} from '../store/AppReducer';
 import {
   Button,
   FormControl,
-  InputAdornment, InputLabel,
+  InputAdornment,
+  InputLabel,
   MenuItem,
+  Modal,
   Select,
   TextField,
 } from '@material-ui/core';
@@ -16,9 +18,11 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     justifyContent: 'center',
+    alignItems: 'center',
   },
   form: {
-    maxWidth: 400,
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(2, 4, 3),
     '& .MuiTextField-root': {
       margin: theme.spacing(1),
     },
@@ -31,12 +35,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const EmployeeForm = () => {
+const EmployeeFormModal = (props) => {
+
+  const {visible, onClose, initialData} = props;
+
   const [store, dispatch] = useStore();
   const classes = useStyles();
 
   const [formData, setFormData] = useState(
-      {name: '', email: '', salary: '', department: ''});
+      initialData || {name: '', email: '', salary: '', department: ''});
 
   const handleChange = (prop) => (event) => {
     setFormData({...formData, [prop]: event.target.value});
@@ -49,11 +56,17 @@ const EmployeeForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(addEmployee(formData));
+    if (formData.id) {
+      dispatch(updateEmployee(formData));
+    } else {
+      dispatch(addEmployee(formData));
+    }
+
+    onClose();
   };
 
   return (
-      <div className={classes.root}>
+      <Modal className={classes.root} open={visible} onClose={onClose}>
         <form className={classes.form} noValidate autoComplete="off"
               onSubmit={handleSubmit}>
           <TextField
@@ -69,6 +82,7 @@ const EmployeeForm = () => {
               onChange={handleChange('email')}
           />
           <TextField
+              type={'number'}
               label="Salary"
               variant="outlined"
               value={formData.salary}
@@ -103,12 +117,13 @@ const EmployeeForm = () => {
               }
             </Select>
           </FormControl>
-          <Button variant="contained" color="primary" type="submit">
+          <Button variant="contained" color="primary" type="submit"
+                  style={{marginTop: 20}}>
             Add
           </Button>
         </form>
-      </div>
+      </Modal>
   );
 };
 
-export default EmployeeForm;
+export default EmployeeFormModal;
