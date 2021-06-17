@@ -7,6 +7,7 @@ import {useEffect} from 'react';
 import Layout from './components/Layout';
 import EmployeesList from './components/EmployeesList';
 import DepartmentsList from './components/DepartmentsList';
+import AuthModal from './components/AuthModal';
 
 function App() {
   const [store] = useStore();
@@ -43,6 +44,7 @@ function App() {
         </Layout>
       </Route>
     </Switch>
+    <AuthModal/>
   </Router>;
 }
 

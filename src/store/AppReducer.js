@@ -1,5 +1,8 @@
 import {v4 as uuidv4} from 'uuid';
 
+export const LOGIN = 'APP/LOGIN';
+export const LOGOUT = 'APP/LOGOUT';
+
 export const ADD_DEPARTMENT = 'APP/ADD_DEPARTMENT';
 export const UPDATE_DEPARTMENT = 'APP/UPDATE_DEPARTMENT';
 export const DELETE_DEPARTMENT = 'APP/DELETE_DEPARTMENT';
@@ -11,6 +14,14 @@ export const initialState = JSON.parse(localStorage.getItem('AppData')) || {
   departments: [],
   employees: [],
 };
+
+export const login = (data) => ({
+  type: LOGIN,
+  data: data,
+});
+export const logout = () => ({
+  type: LOGOUT,
+});
 
 export const addDepartment = (data) => ({
   type: ADD_DEPARTMENT,
@@ -86,6 +97,19 @@ export const appReducer = (state = initialState, action) => {
       ...state,
       employees: state.employees.filter(
           (employee) => employee.id !== action.id),
+    };
+  }
+
+  if (action.type === LOGIN) {
+    return {
+      ...state,
+      authToken: 'test-token',
+    };
+  }
+  if (action.type === LOGOUT) {
+    return {
+      ...state,
+      authToken: undefined,
     };
   }
 };

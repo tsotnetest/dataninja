@@ -3,6 +3,9 @@ import {makeStyles} from '@material-ui/core/styles';
 import {Link, useLocation} from 'react-router-dom';
 import {Button, Divider} from '@material-ui/core';
 import ListIcon from '@material-ui/icons/List';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import {useStore} from '../store/Store';
+import {logout} from '../store/AppReducer';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -10,9 +13,10 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
   },
   header: {
-    height: 60,
+    display: 'flex',
+    padding: 10,
     '& button': {
-      margin: '10px 0 0 10px',
+      marginLeft: 10,
     },
     '& a': {
       textDecoration: 'none',
@@ -26,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 const Layout = ({children}) => {
   const classes = useStyles();
 
+  const [{authToken}, dispatch] = useStore();
   let location = useLocation();
 
   const activeRoute = location.pathname;
@@ -34,12 +39,16 @@ const Layout = ({children}) => {
     {
       to: '/employees',
       icon: <ListIcon/>,
-      label: 'Employees list'
+      label: 'Employees list',
     }, {
       to: '/departments',
       icon: <ListIcon/>,
-      label: 'Departments list'
+      label: 'Departments list',
     }];
+
+  function handleLogout() {
+    dispatch(logout());
+  }
 
   return (
       <div className={classes.root}>
@@ -49,7 +58,7 @@ const Layout = ({children}) => {
                 <Link to={route.to} key={i}>
                   <Button
                       variant="contained"
-                      color={activeRoute === route.to ? "secondary" : "primary"}
+                      color={activeRoute === route.to ? 'secondary' : 'primary'}
                       startIcon={route.icon}
                   >
                     {route.label}
@@ -57,6 +66,19 @@ const Layout = ({children}) => {
                 </Link>
             );
           })}
+          <div style={{flex: 1}}/>
+          {
+            authToken && (
+                <Button
+                    variant="contained"
+                    color={'primary'}
+                    startIcon={<ExitToAppIcon/>}
+                    onClick={handleLogout}
+                >
+                  Log Out
+                </Button>
+            )
+          }
         </div>
         <Divider/>
         <div className={classes.body}>
